@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "dev": " npm run build && ts-node-dev dist/express/server.js",
-    "db:up": "docker-compose up"
+    "db:up": "docker-compose up",
+    "migration:gen": "typeorm-ts-node-commonjs migration:generate ./src/typeorm/migration/mig -d ./src/typeorm/data-source.ts",
   },
   "keywords": [],
   "author": "",
