@@ -8,7 +8,7 @@ export class Product {
   name: string;
   @Column()
   description: string;
-  @Column()
+  @Column("float8")
   price: number;
   @Column()
   color: string;
