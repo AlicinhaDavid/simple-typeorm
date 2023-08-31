@@ -8,6 +8,9 @@
     "dev": " npm run build && ts-node-dev dist/express/server.js",
     "db:up": "docker-compose up",
     "migration:gen": "typeorm-ts-node-commonjs migration:generate ./src/typeorm/migration/mig -d ./src/typeorm/data-source.ts",
+    "migration:up": "typeorm-ts-node-commonjs migration:run -d ./src/typeorm/data-source.ts",
+    "migration:down": "typeorm-ts-node-commonjs migration:revert -d ./src/typeorm/data-source.ts",
+    "migration:show": "typeorm-ts-node-commonjs migration:show -d ./src/typeorm/data-source.ts"
   },
   "keywords": [],
   "author": "",
