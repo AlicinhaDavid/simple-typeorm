@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  database:
+    image: bitnami/postgresql:latest
+    container_name: simple-typeorm-container
+    networks:
+      - simple-typeorm-network
+    environment:
+      POSTGRES_USERNAME: simple-typeorm
+      POSTGRES_PASSWORD: simple
+      POSTGRES_DATABASE: postgres
+    ports:
+      - "55432:5432"
+
+networks:
+  simple-typeorm-network:
