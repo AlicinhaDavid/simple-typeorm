@@ -1,8 +1,9 @@
 import express from "express";
-import { helloWorld } from "./routes";
+import { routes } from "./routes";
 
 const app = express();
 
-app.get("/", helloWorld);
+app.use(express.json());
+app.use(routes);
 
 app.listen(3333);
