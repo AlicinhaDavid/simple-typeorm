@@ -1,6 +1,11 @@
 import { AppDataSource } from "../data-source";
 import { Product } from "../entity/Product";
-export const productRepository = (): any => {
+
+interface ProductRepositoryInterface {
+  createProduct(data: any): Promise<any>;
+}
+
+export const productRepository = (): ProductRepositoryInterface => ({
   createProduct: async (data: any): Promise<any> => {
     try {
       await AppDataSource.initialize();
@@ -27,5 +32,5 @@ export const productRepository = (): any => {
     } finally {
       await AppDataSource.destroy();
     }
-  };
-};
+  }
+});
