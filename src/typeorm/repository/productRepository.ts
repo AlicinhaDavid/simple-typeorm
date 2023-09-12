@@ -17,13 +17,13 @@ export const productRepository = (): any => {
         await queryRunner.commitTransaction();
         return productSaved;
       } catch (error) {
-        console.log(error);
+        console.log("Transaction error", error);
         await queryRunner.rollbackTransaction();
       } finally {
         await queryRunner.release();
       }
     } catch (error) {
-      console.log(error);
+      console.log("Repository error", error);
     } finally {
       await AppDataSource.destroy();
     }
