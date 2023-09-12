@@ -9,11 +9,12 @@ function helloWorld(request: Request, response: Response) {
 }
 routes.get("/", helloWorld);
 
-const createProduct = (request: Request, response: Response) => {
+const createProduct = async (request: Request, response: Response) => {
   const { name, description, price, color } = request.body;
 
   const product = { name, description, price, color };
-  const productCreated = productRepository().createProduct(product);
+
+  const productCreated = await productRepository().createProduct(product);
 
   return response.json(productCreated);
 };
