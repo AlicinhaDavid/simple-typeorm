@@ -3,6 +3,7 @@ import { Product } from "../entity/Product";
 
 interface ProductRepositoryInterface {
   createProduct(data: any): Promise<any>;
+  getAllProducts(): Promise<Product[] | []>;
 }
 
 export const productRepository = (): ProductRepositoryInterface => ({
@@ -32,5 +33,27 @@ export const productRepository = (): ProductRepositoryInterface => ({
     } finally {
       await AppDataSource.destroy();
     }
-  }
+  },
+  getAllProducts: async (): Promise<Product[] | []> => {
+    try {
+      await AppDataSource.initialize();
+      const repository = AppDataSource.getRepository(Product);
+      const products = await repository.find({
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          price: true,
+          color: true,
+        },
+      });
+
+      return products;
+    } catch (error) {
+      console.log("Get All Products Repository Error:", error);
+      return [];
+    } finally {
+      await AppDataSource.destroy();
+    }
+  },
 });
