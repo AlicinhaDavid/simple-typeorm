@@ -23,13 +23,13 @@ export const productRepository = (): ProductRepositoryInterface => ({
         await queryRunner.commitTransaction();
         return productSaved;
       } catch (error) {
-        console.log("Transaction error", error);
+        console.log("Create Product Transaction error", error);
         await queryRunner.rollbackTransaction();
       } finally {
         await queryRunner.release();
       }
     } catch (error) {
-      console.log("Repository error", error);
+      console.log("Create Product Repository Error:", error);
     } finally {
       await AppDataSource.destroy();
     }
