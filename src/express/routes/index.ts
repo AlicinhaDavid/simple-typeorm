@@ -21,11 +21,8 @@ const createProduct = async (request: Request, response: Response) => {
 
 routes.post("/createProduct", createProduct);
 
-const getAllProducts = async(request: Request, response: Response) => {
-  console.log("step 1");
-  
-  const products = await productRepository().getAllProducts()
-  console.log("step 6");
+const getAllProducts = async (request: Request, response: Response) => {
+  const products = await productRepository().getAllProducts();
   return response.json(products);
 };
 
