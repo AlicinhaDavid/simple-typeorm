@@ -4,6 +4,7 @@ import { Product } from "../entity/Product";
 interface ProductRepositoryInterface {
   createProduct(data: any): Promise<any>;
   getAllProducts(): Promise<Product[] | []>;
+  getProductById(id: string): Promise<Product | null>;
 }
 
 export const productRepository = (): ProductRepositoryInterface => ({
@@ -52,6 +53,23 @@ export const productRepository = (): ProductRepositoryInterface => ({
     } catch (error) {
       console.log("Get All Products Repository Error:", error);
       return [];
+    } finally {
+      await AppDataSource.destroy();
+    }
+  },
+  getProductById: async (id: string): Promise<Product | null> => {
+    try {
+      await AppDataSource.initialize();
+      const repository = AppDataSource.getRepository(Product);
+      const product = await repository.findOne({
+        where: {
+          id: id,
+        },
+      });
+      return product; 
+    } catch (error) {
+      console.log("Get Products By Id Repository Error:", error);
+      return null;
     } finally {
       await AppDataSource.destroy();
     }
