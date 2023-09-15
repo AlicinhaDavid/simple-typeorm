@@ -31,7 +31,8 @@ routes.get("/getAllProducts", getAllProducts);
 const getProductsById = async (request: Request, response: Response) => {
   const { id } = request.query;
 
-  if (typeof id !== "string") return response.json({message: "Id should be a string"}); 
+  if (typeof id !== "string")
+    return response.json({ message: "Id should be a string" });
 
   const product = await productRepository().getProductById(id);
 
