@@ -1,10 +1,12 @@
 import { AppDataSource } from "../data-source";
 import { Product } from "../entity/Product";
+import { Like } from "typeorm";
 
 interface ProductRepositoryInterface {
   createProduct(data: any): Promise<any>;
   getAllProducts(): Promise<Product[] | []>;
   getProductById(id: string): Promise<Product | null>;
+  getProductsByDescription(text: string): Promise<Product[] | []>;
 }
 
 export const productRepository = (): ProductRepositoryInterface => ({
@@ -66,10 +68,25 @@ export const productRepository = (): ProductRepositoryInterface => ({
           id: id,
         },
       });
-      return product; 
+      return product;
     } catch (error) {
       console.log("Get Products By Id Repository Error:", error);
       return null;
+    } finally {
+      await AppDataSource.destroy();
+    }
+  },
+  getProductsByDescription: async (text: string): Promise<Product[] | []> => {
+    try {
+      await AppDataSource.initialize();
+      const repository = AppDataSource.getRepository(Product);
+      const products = await repository.findBy({
+        description: Like(`%${text}%`),
+      });
+      return products;
+    } catch (error) {
+      console.log("Get Products By Description Repository Error:", error);
+      return [];
     } finally {
       await AppDataSource.destroy();
     }
