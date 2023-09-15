@@ -28,7 +28,7 @@ const getAllProducts = async (request: Request, response: Response) => {
 
 routes.get("/getAllProducts", getAllProducts);
 
-const getProductsById = async (request: Request, response: Response) => {
+const getProductById = async (request: Request, response: Response) => {
   const { id } = request.query;
 
   if (typeof id !== "string")
@@ -39,7 +39,7 @@ const getProductsById = async (request: Request, response: Response) => {
   return response.json(product);
 };
 
-routes.get("/getProductsById", getProductsById);
+routes.get("/getProductById", getProductById);
 
 const getProductsByDescription = async (request: Request, response: Response) => {
   const { text } = request.query;
