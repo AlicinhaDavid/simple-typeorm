@@ -39,3 +39,15 @@ const getProductsById = async (request: Request, response: Response) => {
 };
 
 routes.get("/getProductsById", getProductsById);
+
+const getProductsByDescription = async (request: Request, response: Response) => {
+  const { text } = request.query;
+
+  if (typeof text !== "string")
+    return response.json({ message: "Text should be a string" });
+
+  const products = await productRepository().getProductsByDescription(text);
+  return response.json(products);
+};
+
+routes.get("/getProductsByDescription", getProductsByDescription);
