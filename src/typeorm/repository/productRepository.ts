@@ -1,12 +1,16 @@
 import { AppDataSource } from "../data-source";
 import { Product } from "../entity/Product";
-import { Like } from "typeorm";
+import { Like, UpdateResult } from "typeorm";
 
 interface ProductRepositoryInterface {
   createProduct(data: any): Promise<any>;
   getAllProducts(): Promise<Product[] | []>;
   getProductById(id: string): Promise<Product | null>;
   getProductsByDescription(text: string): Promise<Product[] | []>;
+  updateProductPrice(
+    newPrice: number,
+    productId: string
+  ): Promise<Product | null>;
 }
 
 export const productRepository = (): ProductRepositoryInterface => ({
@@ -87,6 +91,41 @@ export const productRepository = (): ProductRepositoryInterface => ({
     } catch (error) {
       console.log("Get Products By Description Repository Error:", error);
       return [];
+    } finally {
+      await AppDataSource.destroy();
+    }
+  },
+  updateProductPrice: async (
+    newPrice: number,
+    productId: string
+  ): Promise<Product | null> => {
+    try {
+      await AppDataSource.initialize();
+
+      const queryRunner = AppDataSource.createQueryRunner();
+      try {
+        await queryRunner.connect();
+        await queryRunner.startTransaction();
+
+        await queryRunner.manager.update(Product, productId, {
+          price: newPrice,
+        });
+        const product = await queryRunner.manager.findOne(Product, {
+          where: { id: productId },
+        });
+
+        await queryRunner.commitTransaction();
+        return product;
+      } catch (error) {
+        console.log("Update Product Price Transaction error", error);
+        await queryRunner.rollbackTransaction();
+        return null;
+      } finally {
+        await queryRunner.release();
+      }
+    } catch (error) {
+      console.log("Update Product Price Repository Error:", error);
+      return null;
     } finally {
       await AppDataSource.destroy();
     }
