@@ -41,7 +41,10 @@ const getProductById = async (request: Request, response: Response) => {
 
 routes.get("/getProductById", getProductById);
 
-const getProductsByDescription = async (request: Request, response: Response) => {
+const getProductsByDescription = async (
+  request: Request,
+  response: Response
+) => {
   const { text } = request.query;
 
   if (typeof text !== "string")
@@ -52,3 +55,17 @@ const getProductsByDescription = async (request: Request, response: Response) =>
 };
 
 routes.get("/getProductsByDescription", getProductsByDescription);
+
+const updateProductPrice = async (request: Request, response: Response) => {
+  const { newPrice, productId } = request.body;
+  if (typeof newPrice !== "number" || typeof productId !== "string")
+    return response.json({ message: "Params in wrong datatype" });
+
+  const result = await productRepository().updateProductPrice(
+    newPrice,
+    productId
+  );
+  return response.json(result);
+};
+
+routes.post("/updateProductPrice", updateProductPrice);
